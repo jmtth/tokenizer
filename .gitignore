@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Remix compiler artifacts
 **/artifacts/
 **/artifacts/**
@@ -13,3 +14,25 @@ states/
 # Optional
 .env
 .env.local
+=======
+# Node modules
+/node_modules
+
+# Compilation output
+/dist
+
+# pnpm deploy output
+/bundle
+
+# Hardhat Build Artifacts
+/artifacts
+
+# Hardhat compilation (v2) support directory
+/cache
+
+# Typechain output
+/types
+
+# Hardhat coverage reports
+/coverage
+>>>>>>> 42d3bb7 (chore: initialize project with package.json and tsconfig.json)
