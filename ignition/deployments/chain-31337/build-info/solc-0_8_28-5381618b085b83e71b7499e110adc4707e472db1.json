@@ -1,0 +1,42 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-5381618b085b83e71b7499e110adc4707e472db1",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/Liberty.sol": "project/contracts/Liberty.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/IERC20.sol": {
+        "content": "// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.28;\n\ninterface IERC20 {\n    function transfer(address recipient, uint256 amount) external returns (bool);\n    function approve(address spender, uint256 amount) external returns (bool);\n    function balanceOf(address account) external view returns (uint256);\n    function allowance(address owner, address spender) external view returns (uint256);\n    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);\n    function totalSupply() external view returns (uint256);\n}"
+      },
+      "project/contracts/Liberty.sol": {
+        "content": "// SPDX-License-Identifier: UNLICENSED\npragma solidity ^0.8.28;\nimport \"./IERC20.sol\";\n\n // @name Liberty\n // A simple ERC20 token with a fixed initial supply minted to the deployer.\n // includes an owner-controlled minting function.\n //  @param initialSupply The total number of tokens to create initially (e.g., 1000000 for one million tokens).\n //        The deployer of the contract will receive all initial tokens.\n // The ERC20 standard typically uses 'decimals' to represent token divisibility.\n // To mint 'initialSupply' whole tokens, we multiply by 10 raised to the power of 'decimals()'.\n // Example: If initialSupply is 1000 and decimals() is 18, we mint 1000 * (10**18) base units.\ncontract Liberty is IERC20 {\n    event Transfer(address indexed from, address indexed to, uint256 value);\n    event Approval(address indexed owner, address indexed spender, uint256 value);\n\n    address payable public Libertyowner;\n    uint256 public totalSupply;\n    mapping(address => uint256) public balanceOf;\n    mapping(address => mapping(address => uint256)) public allowance;\n    string public name;\n    string public symbol;\n    uint8 public decimals;\n    \n    constructor(string memory _name, string memory _symbol, uint8 _decimals) {\n        name = _name;\n        symbol = _symbol;\n        decimals = _decimals;\n        Libertyowner = payable(msg.sender);\n    }\n\n    function transfer(address recipient, uint256 amount) external returns (bool) {\n        require(balanceOf[msg.sender] >= amount, \"Insufficient balance\");\n        balanceOf[msg.sender] -= amount;\n        balanceOf[recipient] += amount;\n        emit Transfer(msg.sender, recipient, amount);\n        return true;\n    }\n    function approve(address spender, uint256 amount) external returns (bool) {\n        allowance[msg.sender][spender] = amount;\n        emit Approval(msg.sender, spender, amount);\n        return true;\n    }\n    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool) {\n        require(balanceOf[sender] >= amount, \"Insufficient balance\");\n        require(allowance[sender][msg.sender] >= amount, \"Allowance exceeded\");\n        balanceOf[sender] -= amount;\n        balanceOf[recipient] += amount;\n        allowance[sender][msg.sender] -= amount;\n        emit Transfer(sender, recipient, amount);\n        return true;\n    }\n     function _mint(address to, uint256 amount) internal {\n        require(msg.sender == Libertyowner, \"Only the owner can mint tokens\");\n        balanceOf[to] += amount;\n        totalSupply += amount;\n        emit Transfer(address(0), to, amount);\n    }\n\n    function _burn(address from, uint256 amount) internal {\n        require(msg.sender == Libertyowner, \"Only the owner can burn tokens\");\n        require(balanceOf[from] >= amount, \"Insufficient balance to burn\");\n        balanceOf[from] -= amount;\n        totalSupply -= amount;\n        emit Transfer(from, address(0), amount);\n    }\n\n    function mint(address to, uint256 amount) external {\n        require(msg.sender == Libertyowner, \"Only the owner can mint tokens\");\n        _mint(to, amount * 10 ** uint256(decimals));\n    }\n\n    function burn(address from, uint256 amount) external {\n        require(msg.sender == Libertyowner, \"Only the owner can burn tokens\");\n        _burn(from, amount * 10 ** uint256(decimals));\n    }\n\n\n}\n"
+      }
+    }
+  }
+}
