@@ -42,8 +42,6 @@ Implémente les fonctions ERC20 principales:
 - `approve`
 - `transferFrom`
 - `mint` (owner only)
-- `burn` (owner only)
-- `burnFrom` (allowance)
 
 Sécurité/propriété:
 
@@ -73,7 +71,7 @@ Flux standard côté dApp:
 6. La dApp envoie ensuite `buy(itemId, answer)`.
 7. L'étudiant confirme la transaction `buy` dans son wallet.
 8. Le contrat applique la règle:
-	- bonus valide: pas de burn, consommation de `LotteryAccess`
+	- bonus valide: pas de paiement en token, consommation de `LotteryAccess`
 	- sinon: `transferFrom(student, shop, price)`
 9. Le backend peut confirmer l'achat en lisant l'event `ItemPurchased` on-chain.
 

@@ -15,8 +15,8 @@ Goodies42 est un token utilitaire pour valoriser la progression des étudiants 4
 - Standard: ERC20 (réécriture des fonctions clés)
 
 ## Mécanique de consommation
-- Achat standard: burn de token
-- Achat bonus: si `LotteryAccess` + bonne réponse, pas de burn
+- Achat standard: transfert de token vers la trésorerie du shop (`transferFrom`)
+- Achat bonus: si `LotteryAccess` + bonne réponse, pas de paiement en token
 
 ## Gouvernance et sécurité
 - Fonctions sensibles protégées par `onlyOwner`

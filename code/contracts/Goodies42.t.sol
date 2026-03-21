@@ -3,6 +3,8 @@ pragma solidity ^0.8.28;
 
 import { Goodies42 } from "./Goodies42.sol";
 
+// create a separate contract to test the minting and ownership 
+// transfer restrictions of Goodies42
 contract NonOwnerMinter {
   function tryMint(address token, address to, uint256 amount) external returns (bool) {
     (bool success, ) = token.call(
@@ -30,7 +32,7 @@ contract Goodies42Test {
     nonOwner = new NonOwnerMinter();
   }
 
-  // Vérifie que le contrat est initialisé avec les bonnes métadonnées et un supply à 0.
+  // Verify that the token initializes with the expected name, symbol, decimals, owner, and total supply.
   function test_InitializesWithExpectedValues() public view {
     require(keccak256(bytes(goodies42.name())) == keccak256(bytes("Goodies42")), "invalid name");
     require(keccak256(bytes(goodies42.symbol())) == keccak256(bytes("GDS42")), "invalid symbol");
@@ -39,7 +41,7 @@ contract Goodies42Test {
     require(goodies42.totalSupply() == 0, "total supply should start at 0");
   }
 
-  // Vérifie que seul le owner peut mint et que le mint crédite le bon montant (avec decimals).
+  // Verify that only the owner can mint and that the mint credits the correct amount (with decimals).
   function test_OnlyOwnerCanMint() public {
     bool success = nonOwner.tryMint(address(goodies42), recipient, 1);
     require(!success, "non-owner mint should fail");
@@ -48,7 +50,7 @@ contract Goodies42Test {
     require(goodies42.balanceOf(address(this)) == 1e18, "owner mint should succeed");
   }
 
-  // Vérifie qu'on peut transférer jusqu'au solde max, mais pas au-delà.
+  // Verify that transfers cannot exceed the balance.
   function test_TransferCannotExceedBalance() public {
     goodies42.mint(address(this), 100);
 
@@ -63,7 +65,7 @@ contract Goodies42Test {
     require(!shouldFail, "transfer above balance should fail");
   }
 
-  // Vérifie le transfert de propriété en 2 étapes et les droits owner associés.
+  // Verify the two-step ownership transfer and the associated owner rights.
   function test_TwoStepOwnershipTransfer() public {
     goodies42.transferOwnership(address(nonOwner));
     require(goodies42.pendingOwner() == address(nonOwner), "pending owner should be set");
