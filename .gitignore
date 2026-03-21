@@ -33,3 +33,6 @@ states/
 
 # Hardhat coverage reports
 /coverage
+
+instructions.md
+

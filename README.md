@@ -1,127 +1,130 @@
-# Tokenizer (42) — Liberty Token (ERC20)
+# Tokenizer (42) — Goodies42
 
-Projet d'apprentissage pour créer un token ERC20 simple avec Hardhat 3.
+> Projet ERC20 réalisé dans le cadre de l’école 42.
 
-## Objectif du projet
+## Résumé
 
-Créer une monnaie personnalisée (`Liberty`, symbole `LIB`) avec les opérations ERC20 principales:
+`Goodies42 (GDS42)` est un token utilitaire pour récompenser les étudiants et acheter des goodies via un contrat boutique.
+
+- Nom: `Goodies42`
+- Symbole: `GDS42`
+- Décimales: `18` (fixes)
+- Standard: ERC20 (`IERC20Metadata`)
+- Blockchain cible: Sepolia
+
+## Structure du projet (conforme consignes)
+
+``` bash
+Goodies42
+├── 📁 code/   #code source du token et tests
+│   ├── 📁 contracts/
+│   │   └── Goodies42.sol
+│   └── 📁 test/
+│       └── Goodies42.test.ts
+├── 📁 deployment/   #déploiement
+│   └── 📁 Modules/
+│       └── Goodies42.ts
+├── 📁 documentation/   #docs projet
+│   └── WHITEPAPER.md
+├── MakeFile
+├── README.md
+└── config-Files(json, ts, env, gitignore)
+```
+Les fichiers de configuration restent à la racine (`hardhat.config.ts`, `package.json`, `tsconfig.json`) pour conserver la convention Hardhat.
+
+## Contrats 📁
+
+### `code/contracts/Goodies42.sol`
+
+Implémente les fonctions ERC20 principales:
 
 - `transfer`
 - `approve`
 - `transferFrom`
 - `mint` (owner only)
 - `burn` (owner only)
+- `burnFrom` (allowance)
 
-## Contrat principal
+Sécurité/propriété:
 
-Le contrat est dans `contracts/Liberty.sol`.
+- `onlyOwner` sur fonctions sensibles
+- transfert de propriété en 2 étapes: `transferOwnership` puis `acceptOwnership`
+- possibilité de transférer la propriété vers un multisig
 
-### Ce qu'il fait
+### `code/contracts/GoodiesShop.sol`
 
-- Définit les métadonnées du token (`name`, `symbol`, `decimals`).
-- Stocke les soldes via `balanceOf[address]`.
-- Stocke les autorisations via `allowance[owner][spender]`.
-- Définit un propriétaire (`Libertyowner`) qui peut `mint` et `burn`.
+Permet l’achat d’un goodie via `buy`:
 
-### Remarques importantes
+- vérification du prix on-chain via `itemPrice[itemId]`
+- accès bonus (`LotteryAccess`) si bonne réponse
+- sinon transfert du prix vers la trésorerie du shop
+- max `LotteryAccess` par utilisateur: `3`
+- retrait admin possible via `withdrawTokens`
 
-- Le contrat ne mint pas automatiquement au déploiement.
-- Dans ce projet, le mint initial est fait dans le module Ignition.
-- `mint(to, amount)` et `burn(from, amount)` multiplient `amount` par `10**decimals`.
+## Déroulement d'un achat (wallet étudiant)
 
-## Déploiement Ignition
+Flux standard côté dApp:
 
-Module: `ignition/modules/Liberty.ts`
+1. L'étudiant connecte son wallet (MetaMask) à la dApp.
+2. La dApp lit le prix on-chain avec `itemPrice(itemId)`.
+3. La dApp vérifie l'allowance du token pour `GoodiesShop`.
+4. Si allowance insuffisante, la dApp propose une transaction `approve(shopAddress, price)`.
+5. L'étudiant confirme la transaction `approve` dans son wallet.
+6. La dApp envoie ensuite `buy(itemId, answer)`.
+7. L'étudiant confirme la transaction `buy` dans son wallet.
+8. Le contrat applique la règle:
+	- bonus valide: pas de burn, consommation de `LotteryAccess`
+	- sinon: `transferFrom(student, shop, price)`
+9. Le backend peut confirmer l'achat en lisant l'event `ItemPurchased` on-chain.
 
-- Déploie `Liberty("Liberty Token", "LIB", 18)`
-- Exécute ensuite `mint(owner, 1000000)`
+## Commandes
 
-Donc le owner reçoit `1 000 000 LIB` (affichés), soit `1000000 * 10^18` unités internes.
+Via Makefile:
 
-## Lancer le projet
+```bash
+make install
+make compile
+make test
+make node
+make deploy-local
+make deploy-sepolia
+```
 
-### Compiler
+## Pourquoi un RPC provider est nécessaire
 
-`npx hardhat compile`
+Pour déployer sur Sepolia, Hardhat doit se connecter à un noeud Ethereum via une URL RPC.
 
-### Lancer tous les tests
+- La blockchain cible est Sepolia, mais l'accès se fait via un provider RPC (Alchemy, Infura, QuickNode, etc.)
+- Sans URL RPC valide, le projet ne peut pas lire l'état de la chaîne ni envoyer les transactions de déploiement
+- Un endpoint public sans compte peut exister, mais il est souvent limité ou instable
 
-`npx hardhat test`
+Variables à renseigner:
 
-### Déployer en local persistant (pour MetaMask)
+- `SEPOLIA_RPC_URL` : URL HTTP du provider RPC Sepolia
+- `PRIVATE_KEY` : clé privée du wallet de déploiement (wallet testnet dédié)
 
-1. Démarrer une node locale:
+Préparer l'environnement Sepolia:
 
-`npx hardhat node`
+```bash
+cp .env.example .env
+# puis renseigner SEPOLIA_RPC_URL et PRIVATE_KEY dans .env
+```
 
-2. Déployer sur localhost:
+Sans Makefile:
 
-`npx hardhat ignition deploy ./ignition/modules/Liberty.ts --network localhost`
+```bash
+npx hardhat compile
+npx hardhat test
+npx hardhat ignition deploy ./deployment/modules/Goodies42.ts --network localhost
+npx hardhat ignition deploy ./deployment/modules/Goodies42.ts --network sepolia
+```
 
-## Tests implémentés
+## Déploiement public (à compléter)
 
-### Solidity
+- Goodies42 (Sepolia): `TODO`
+- GoodiesShop (Sepolia): `TODO`
+- Lien Etherscan: `TODO`
 
-Fichier: `contracts/Liberty.t.sol`
+## Whitepaper
 
-- Initialisation correcte (name/symbol/decimals/owner/supply)
-- Seul le owner peut mint
-- Transfert limité au solde disponible
-
-### TypeScript
-
-Fichier: `test/Liberty.test.ts`
-
-- Initialisation correcte
-- Seul le owner peut mint
-- Transfert max possible, dépassement refusé
-- Scénario `approve -> transferFrom`
-
-## Explications des notions clés
-
-### Smart contract
-
-Un smart contract est un programme stocké sur la blockchain.
-Il a une adresse et son état (balances, allowances, owner) est public/vérifiable.
-
-### Token ERC20
-
-Un token ERC20 n'est pas un objet unique par token.
-Le contrat garde seulement des montants par adresse (`balanceOf`).
-
-- Le token (contrat) a **une adresse de contrat**.
-- Les utilisateurs ont un **solde** de ce token.
-
-### Pourquoi `approve` existe si `transfer` existe déjà ?
-
-- `transfer`: tu envoies **tes propres** tokens.
-- `approve + transferFrom`: tu autorises un tiers (ou un autre contrat) à dépenser à ta place.
-
-Cas typique: DEX, marketplace, abonnement.
-
-### Ligne importante de `transferFrom`
-
-`allowance[sender][msg.sender] -= amount;`
-
-Elle réduit l'autorisation restante après la dépense.
-Sans cette ligne, le spender pourrait réutiliser la même autorisation indéfiniment.
-
-### `payable(msg.sender)`
-
-`payable` sert pour les transferts d'ETH.
-Dans ce contrat ERC20, les fonctions déplacent des tokens, pas de l'ETH.
-
-Donc:
-
-- `address payable Libertyowner` fonctionne,
-- mais `address Libertyowner` serait suffisant ici si tu ne transfères jamais d'ETH.
-
-## MetaMask: voir ton token custom
-
-Pour voir `LIB` dans MetaMask:
-
-1. Être sur le bon réseau (localhost 8545, chainId 31337).
-2. Importer le token custom avec l'adresse du contrat déployé.
-3. Vérifier que c'est bien le wallet du owner (ou un wallet ayant reçu des tokens).
-
-Si tu déploies sans `--network localhost` sur une instance in-process Hardhat, l'état est temporaire.
+Voir `documentation/WHITEPAPER.md`.

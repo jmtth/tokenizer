@@ -1,10 +1,26 @@
+import "dotenv/config";
 import { defineConfig } from "hardhat/config";
 import hardhatIgnitionViemPlugin from "@nomicfoundation/hardhat-ignition-viem";
 import hardhatNodeTestRunnerPlugin from "@nomicfoundation/hardhat-node-test-runner";
+
+const sepoliaRpcUrl = process.env.SEPOLIA_RPC_URL || "https://eth-sepolia.g.alchemy.com/v2/YOUR_PROJECT_ID";
+const privateKey = process.env.PRIVATE_KEY || "YOUR_WALLET_PRIVATE_KEY";
 
 export default defineConfig({
   plugins: [hardhatIgnitionViemPlugin, hardhatNodeTestRunnerPlugin],
   solidity: {
     version: "0.8.28",
+  },
+  networks: {
+    sepolia: {
+      type: "http",
+      chainType: "l1",
+      url: sepoliaRpcUrl,
+      accounts: [privateKey],
+    },
+  },
+  paths: {
+    sources: "./code/contracts",
+    tests: "./code/test",
   },
 });
