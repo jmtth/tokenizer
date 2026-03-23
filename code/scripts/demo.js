@@ -18,8 +18,8 @@ async function main() {
   const tokenAddress = goodiesToken.address;
   console.log("\n[1] Token GOODIES42 déployé à:", tokenAddress);
 
-  const goodiesShop = await viem.deployContract("GoodiesShop", [tokenAddress]);
-  const shopAddress = goodiesShop.address;
+  const goodies42Shop = await viem.deployContract("Goodies42Shop", [tokenAddress]);
+  const shopAddress = goodies42Shop.address;
   console.log("[2] Shop déployé à:", shopAddress);
 
   console.log("\n--- Étape 1 : Fin de Piscine ---");
@@ -34,16 +34,16 @@ async function main() {
   await goodiesToken.write.mint([student.account.address, 100n], {
     account: staff.account,
   });
-  await goodiesShop.write.grantAccess([student.account.address], {
+  await goodies42Shop.write.grantAccess([student.account.address], {
     account: staff.account,
   });
-  await goodiesShop.write.setItemPrice([1n, 100n], {
+  await goodies42Shop.write.setItemPrice([1n, 100n], {
     account: staff.account,
   });
   console.log("Staff: 'Incroyable, 125% ! Voici 100 GDS42 + 1 LotteryAccess.'");
 
   console.log("\n--- Étape 3 : Achat d'un goodie (itemId=1) ---");
-  const price = await goodiesShop.read.itemPrice([1n]);
+  const price = await goodies42Shop.read.itemPrice([1n]);
   console.log("Prix on-chain item #1:", formatWhole(price), "GDS42");
 
   console.log("Étudiant: 'J'approuve le Shop pour dépenser mes tokens...' ");
@@ -52,14 +52,14 @@ async function main() {
   });
 
   console.log("Étudiant: 'Je tente la réponse bonus pour éviter le paiement...' ");
-  await goodiesShop.write.buy([1n, "42"], {
+  await goodies42Shop.write.buy([1n, "42"], {
     account: student.account,
   });
 
   console.log("\n--- RÉSULTAT FINAL ---");
   const finalStudentBalance = await goodiesToken.read.balanceOf([student.account.address]);
   const finalShopBalance = await goodiesToken.read.balanceOf([shopAddress]);
-  const accessRemaining = await goodiesShop.read.userAccessCount([student.account.address]);
+  const accessRemaining = await goodies42Shop.read.userLotteryAccessCount([student.account.address]);
 
   console.log("Solde final étudiant:", formatWhole(finalStudentBalance), "GDS42");
   console.log("Solde final shop:", formatWhole(finalShopBalance), "GDS42");

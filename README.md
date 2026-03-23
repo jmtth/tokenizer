@@ -49,7 +49,7 @@ Sécurité/propriété:
 - transfert de propriété en 2 étapes: `transferOwnership` puis `acceptOwnership`
 - possibilité de transférer la propriété vers un multisig
 
-### `code/contracts/GoodiesShop.sol`
+### `code/contracts/Goodies42Shop.sol`
 
 Permet l’achat d’un goodie via `buy`:
 
@@ -65,7 +65,7 @@ Flux standard côté dApp:
 
 1. L'étudiant connecte son wallet (MetaMask) à la dApp.
 2. La dApp lit le prix on-chain avec `itemPrice(itemId)`.
-3. La dApp vérifie l'allowance du token pour `GoodiesShop`.
+3. La dApp vérifie l'allowance du token pour `Goodies42Shop`.
 4. Si allowance insuffisante, la dApp propose une transaction `approve(shopAddress, price)`.
 5. L'étudiant confirme la transaction `approve` dans son wallet.
 6. La dApp envoie ensuite `buy(itemId, answer)`.
@@ -120,7 +120,7 @@ npx hardhat ignition deploy ./deployment/modules/Goodies42.ts --network sepolia
 ## Déploiement public (à compléter)
 
 - Goodies42 (Sepolia): `TODO`
-- GoodiesShop (Sepolia): `TODO`
+- Goodies42Shop (Sepolia): `TODO`
 - Lien Etherscan: `TODO`
 
 ## Whitepaper

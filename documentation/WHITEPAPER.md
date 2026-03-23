@@ -5,7 +5,7 @@ Goodies42 est un token utilitaire pour valoriser la progression des étudiants 4
 
 ## Utilité
 - Récompenser les étapes de parcours (piscine, projets, cercle, transcendance)
-- Permettre des achats via `GoodiesShop`
+- Permettre des achats via `Goodies42Shop`
 - Ajouter une mécanique bonus (`LotteryAccess`) limitée à 3
 
 ## Token

@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import "./IGoodies42ERC20.sol";
 
-contract GoodiesShop {
+contract Goodies42Shop {
     IGoodies42ERC20 public token;
     address public owner;
     address public pendingOwner;
@@ -22,7 +22,7 @@ contract GoodiesShop {
     mapping(address => uint256) public userAvailableLotteryAccessCount;
     
     // Hash de la réponse attendue pour le bonus LotteryAccess
-    bytes32 private constant ANSWER_HASH = 0xccb1f717aa77602faf03a594761a36956b1c4cf44c6b336d1db57da799b331b8;
+    bytes32 public constant HASH_ANSWER = 0xccb1f717aa77602faf03a594761a36956b1c4cf44c6b336d1db57da799b331b8;
 
     event ItemPurchased(address indexed student, uint256 indexed itemId, uint256 pricePaid, bool wasFree);
     event ItemPriceUpdated(uint256 indexed itemId, uint256 price);
@@ -89,7 +89,7 @@ contract GoodiesShop {
     function buy(uint256 itemId, string memory _answer) public {
         uint256 price = itemPrice[itemId];
         require(price > 0, "Item not configured");
-        bool isCorrect = (keccak256(abi.encodePacked(_answer)) == ANSWER_HASH);
+        bool isCorrect = (keccak256(abi.encodePacked(_answer)) == HASH_ANSWER);
 
         if (userLotteryAccessCount[msg.sender] > 0 && isCorrect) {
             // USECASE FREE GOODIES ACCESS
