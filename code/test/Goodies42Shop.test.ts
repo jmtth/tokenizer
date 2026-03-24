@@ -94,6 +94,8 @@ describe ("goodies42Shop (TypeScript tests)", async () => {
 
     const after = await goodies42Shop.read.userAvailableLotteryAccessCount([student.account.address]);
     assert.equal(after, 3n);
+    const accessRemaining = await goodies42Shop.read.userLotteryAccessCount([student.account.address]);
+    assert.equal(accessRemaining, 3n);
   });
 
     
