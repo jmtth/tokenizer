@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { network } from "hardhat";
 
-describe("Liberty (TypeScript tests)", async () => {
+describe("Goodies42 (TypeScript tests)", async () => {
   const { viem } = await network.connect();
 
-  // Vérifie les valeurs initiales: nom, symbole, decimals, owner et totalSupply.
+  // Verifies initial values: name, symbol, decimals, owner, and totalSupply.
   it("initializes with expected values", async () => {
     const goodies42 = await viem.deployContract("Goodies42");
 
@@ -24,7 +24,7 @@ describe("Liberty (TypeScript tests)", async () => {
     assert.equal(supply, 0n);
   });
 
-  // Vérifie que seul le owner peut mint des tokens.
+  // Verifies that only the owner can mint tokens.
   it("allows only owner to mint", async () => {
     const goodies42 = await viem.deployContract("Goodies42");
     const [owner, nonOwner] = await viem.getWalletClients();
@@ -43,7 +43,7 @@ describe("Liberty (TypeScript tests)", async () => {
     );
   });
 
-  // Vérifie qu'un transfert est possible jusqu'au solde, puis échoue au-delà.
+  // Verifies that a transfer succeeds up to the available balance, then fails beyond it.
   it("transfers up to available balance only", async () => {
     const goodies42 = await viem.deployContract("Goodies42");
     const [owner, recipient] = await viem.getWalletClients();
@@ -71,7 +71,7 @@ describe("Liberty (TypeScript tests)", async () => {
     );
   });
 
-  // Montre le flux ERC20 classique approve -> transferFrom (délégation de dépense).
+  // Demonstrates the classic ERC20 approve -> transferFrom flow (spending delegation).
   it("approve then transferFrom lets a spender move tokens", async () => {
     const goodies42 = await viem.deployContract("Goodies42");
     const [owner, spender, recipient] = await viem.getWalletClients();
@@ -108,7 +108,7 @@ describe("Liberty (TypeScript tests)", async () => {
     );
   });
 
-  // Vérifie le transfert de propriété en 2 étapes: proposal + acceptation.
+  // Verifies the 2-step ownership transfer: proposal + acceptance.
   it("supports two-step ownership transfer", async () => {
     const goodies42 = await viem.deployContract("Goodies42");
     const [currentOwner, nextOwner, outsider] = await viem.getWalletClients();
