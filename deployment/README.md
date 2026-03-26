@@ -2,18 +2,21 @@
 
 Ce dossier regroupe les éléments de déploiement.
 
-- `modules/Goodies42.ts`: module Ignition de déploiement
+- `modules/Goodies42Core.ts`: déploie `Goodies42` + `Goodies42Shop`
+- `modules/Goodies42Bonus.ts`: déploie `Goodies42Management` (multisig)
 
 ## Commandes
 
 Local:
 
 ```bash
-make deploy-local
+make deploy-core-local
+make deploy-bonus-local
 ```
 
 Sepolia:
 
 ```bash
-make deploy-sepolia
+make deploy-core-sepolia
+make deploy-bonus-sepolia
 ```

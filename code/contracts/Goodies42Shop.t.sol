@@ -162,7 +162,10 @@ contract Goodies42ShopTest {
         // fourth
         approveSuccess = student.tryApprove(address(goodies42), address(goodies42Shop), 50 * 10**18);
         require(approveSuccess, "approve should succeed");
-        require(goodies42Shop.grantAccess(address(student)) == false,;
+        (bool grantSuccess, ) = address(goodies42Shop).call(
+            abi.encodeWithSignature("grantAccess(address)", address(student))
+        );
+        require(!grantSuccess, "grant access should fail");
         buySuccess = student.tryBuy(address(goodies42Shop), 1, "42");
         require(buySuccess, "buy should succeed");
         require(goodies42.balanceOf(address(student)) == 50 * 10**18, "balance of student should be 50"); 

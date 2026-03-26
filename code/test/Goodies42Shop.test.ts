@@ -98,5 +98,19 @@ describe ("goodies42Shop (TypeScript tests)", async () => {
     assert.equal(accessRemaining, 3n);
   });
 
+  it ("Only staff can withdraw tokens", async () =>{
+    const {goodies42Shop, goodies42, staff, student} = await setupShopPurchaseContext();
+    const tenTokens = 10n * 10n ** 18n;
+    await goodies42.write.mint([goodies42Shop.address, 10n], {account: staff.account});
+    const studentBalanceBefore = await goodies42.read.balanceOf([student.account.address]);
+    await goodies42Shop.write.withdrawTokens([student.account.address, tenTokens], {account: staff.account});
+    const studentBalanceAfter = await goodies42.read.balanceOf([student.account.address]);
+    assert.equal(studentBalanceAfter - studentBalanceBefore, tenTokens);
+    await assert.rejects(
+      goodies42Shop.write.withdrawTokens([student.account.address, tenTokens], {account: student.account})
+    );
+    await assert.equal(await goodies42Shop.read.shopTokenBalance(), 0n);
+  });
+
     
 });

@@ -1,8 +1,13 @@
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-export default buildModule("Goodies42Module", (m) => {
+export default buildModule("Goodies42CoreModule", (m) => {
   const owner = m.getAccount(0);
+
   const goodies42 = m.contract("Goodies42", [], {
+    from: owner,
+  });
+
+  const goodies42Shop = m.contract("Goodies42Shop", [goodies42], {
     from: owner,
   });
 
@@ -10,5 +15,5 @@ export default buildModule("Goodies42Module", (m) => {
     from: owner,
   });
 
-  return { goodies42 };
+  return { goodies42, goodies42Shop };
 });
