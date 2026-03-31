@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-MODULE ?= ./deployment/modules/Goodies42Core.ts
+MODULE ?= ./deployment/ignition/modules/Goodies42Core.ts
 NETWORK ?= localhost
 
 .PHONY: help install compile test clean node deploy-local deploy-sepolia deploy-core-local deploy-core-sepolia deploy-bonus-local deploy-bonus-sepolia demo
@@ -39,16 +39,16 @@ deploy-sepolia:
 	npx hardhat ignition deploy $(MODULE) --network sepolia
 
 deploy-core-local:
-	npx hardhat ignition deploy ./deployment/modules/Goodies42Core.ts --network localhost
+	npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --network localhost
 
 deploy-core-sepolia:
-	npx hardhat ignition deploy ./deployment/modules/Goodies42Core.ts --network sepolia
+	npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --network sepolia
 
 deploy-bonus-local:
-	npx hardhat ignition deploy ./deployment/modules/Goodies42Bonus.ts --network localhost
+	npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Bonus.ts --network localhost
 
 deploy-bonus-sepolia:
-	npx hardhat ignition deploy ./deployment/modules/Goodies42Bonus.ts --network sepolia
+	npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Bonus.ts --network sepolia
 
 demo:
 	npx hardhat run code/scripts/demo.js

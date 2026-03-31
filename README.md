@@ -113,8 +113,8 @@ Sans Makefile:
 ```bash
 npx hardhat compile
 npx hardhat test
-npx hardhat ignition deploy ./deployment/modules/Goodies42Core.ts --network localhost
-npx hardhat ignition deploy ./deployment/modules/Goodies42Core.ts --network sepolia
+npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --network localhost
+npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --network sepolia
 ```
 
 ## Déploiement public (à compléter)

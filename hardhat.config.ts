@@ -22,5 +22,6 @@ export default defineConfig({
   paths: {
     sources: "./code/contracts",
     tests: "./code/test",
+    ignition: "./deployment/ignition",
   },
 });

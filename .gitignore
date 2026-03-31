@@ -36,5 +36,7 @@ states/
 
 instructions.md
 *.pdf
-
-
+journal.jsonl
+**/build-info/**
+**/build-info/
+deployed_addresses.json
