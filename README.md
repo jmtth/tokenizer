@@ -1,83 +1,86 @@
-# Tokenizer (42) — Goodies42
+# Tokenizer (42) - Goodies42
 
-> Projet ERC20 réalisé dans le cadre de l’école 42.
+> ERC20 project developed as part of the 42 school curriculum.
 
 ![Goodies42 logo](./documentation/GDS42_logo.png)
 
-## Résumé
+## Summary
 
-`Goodies42 (GDS42)` est un token utilitaire pour récompenser les étudiants et acheter des goodies via un contrat boutique.
+`Goodies42 (GDS42)` is a utility token used to reward students and purchase goodies through a shop contract.
 
-- Nom: `Goodies42`
-- Symbole: `GDS42`
-- Décimales: `18` (fixes)
+- Name: `Goodies42`
+- Symbol: `GDS42`
+- Decimals: `18` (fixed)
 - Standard: ERC20 (`IERC20Metadata`)
-- Blockchain cible: Sepolia
+- Target blockchain: Sepolia
 
-## Structure du projet (conforme consignes)
+## Project Structure (assignment-compliant)
 
-``` bash
+```bash
 Goodies42
-├── 📁 code/   #code source du token et tests
-│   ├── 📁 contracts/
+├── code/   # token source code and tests
+│   ├── contracts/
 │   │   └── Goodies42.sol
-│   └── 📁 test/
+│   └── test/
 │       └── Goodies42.test.ts
-├── 📁 deployment/   #déploiement
-│   └── 📁 Modules/
+├── deployment/   # deployment files
+│   └── Modules/
 │       └── Goodies42.ts
-├── 📁 documentation/   #docs projet
-│   └── WHITEPAPER.md
-├── MakeFile
+├── documentation/   # project docs
+│   ├── WHITEPAPER_FR.md
+│   └── WHITEPAPER_US.md
+├── Makefile
 ├── README.md
-└── config-Files(json, ts, env, gitignore)
+├── README_FR.md
+└── config files (json, ts, env, gitignore)
 ```
-Les fichiers de configuration restent à la racine (`hardhat.config.ts`, `package.json`, `tsconfig.json`) pour conserver la convention Hardhat.
 
-## Contrats 📁
+Configuration files remain at the repository root (`hardhat.config.ts`, `package.json`, `tsconfig.json`) to keep standard Hardhat conventions.
+
+## Contracts
 
 ### `code/contracts/Goodies42.sol`
 
-Implémente les fonctions ERC20 principales:
+Implements the core ERC20 functions:
 
 - `transfer`
 - `approve`
 - `transferFrom`
 - `mint` (owner only)
 
-Sécurité/propriété:
+Security/ownership:
 
-- `onlyOwner` sur fonctions sensibles
-- transfert de propriété en 2 étapes: `transferOwnership` puis `acceptOwnership`
-- possibilité de transférer la propriété vers un multisig
+- `onlyOwner` on sensitive functions
+- 2-step ownership transfer: `transferOwnership` then `acceptOwnership`
+- ownership can be transferred to a multisig
 
 ### `code/contracts/Goodies42Shop.sol`
 
-Permet l’achat d’un goodie via `buy`:
+Handles item purchases through `buy`:
 
-- vérification du prix on-chain via `itemPrice[itemId]`
-- accès bonus (`LotteryAccess`) si bonne réponse
-- sinon transfert du prix vers la trésorerie du shop
-- max `LotteryAccess` par utilisateur: `3`
-- retrait admin possible via `withdrawTokens`
+- on-chain price check via `itemPrice[itemId]`
+- bonus access (`LotteryAccess`) if the answer is correct
+- otherwise transfers token payment to the shop treasury
+- max `LotteryAccess` per user: `3`
+- admin withdrawal available via `withdrawTokens`
 
-## Déroulement d'un achat (wallet étudiant)
+## Purchase Flow (student wallet)
 
-Flux standard côté dApp:
+Standard dApp flow:
 
-1. L'étudiant connecte son wallet (MetaMask) à la dApp.
-2. La dApp lit le prix on-chain avec `itemPrice(itemId)`.
-3. La dApp vérifie l'allowance du token pour `Goodies42Shop`.
-4. Si allowance insuffisante, la dApp propose une transaction `approve(shopAddress, price)`.
-5. L'étudiant confirme la transaction `approve` dans son wallet.
-6. La dApp envoie ensuite `buy(itemId, answer)`.
-7. L'étudiant confirme la transaction `buy` dans son wallet.
-8. Le contrat applique la règle:
-	- bonus valide: pas de paiement en token, consommation de `LotteryAccess`
-	- sinon: `transferFrom(student, shop, price)`
-9. Le backend peut confirmer l'achat en lisant l'event `ItemPurchased` on-chain.
+1. Student connects wallet (MetaMask) to the dApp.
+2. dApp reads on-chain price with `itemPrice(itemId)`.
+3. dApp checks token allowance for `Goodies42Shop`.
+4. If allowance is too low, dApp requests `approve(shopAddress, price)`.
+5. Student confirms the `approve` transaction in wallet.
+6. dApp then sends `buy(itemId, answer)`.
+7. Student confirms the `buy` transaction in wallet.
+8. Contract applies the rule:
+   - valid bonus: no token payment, `LotteryAccess` is consumed
+   - otherwise: `transferFrom(student, shop, price)`
+9. Backend can confirm purchase by reading the on-chain `ItemPurchased` event.
 
-## Commandes
+## Commands
 
 Via Makefile:
 
@@ -90,27 +93,27 @@ make deploy-local
 make deploy-sepolia
 ```
 
-## Pourquoi un RPC provider est nécessaire
+## Why an RPC Provider Is Required
 
-Pour déployer sur Sepolia, Hardhat doit se connecter à un noeud Ethereum via une URL RPC.
+To deploy on Sepolia, Hardhat must connect to an Ethereum node through an RPC URL.
 
-- La blockchain cible est Sepolia, mais l'accès se fait via un provider RPC (Alchemy, Infura, QuickNode, etc.)
-- Sans URL RPC valide, le projet ne peut pas lire l'état de la chaîne ni envoyer les transactions de déploiement
-- Un endpoint public sans compte peut exister, mais il est souvent limité ou instable
+- Target blockchain is Sepolia, but access is through an RPC provider (Alchemy, Infura, QuickNode, etc.)
+- Without a valid RPC URL, the project cannot read chain state or broadcast deployment transactions
+- Public endpoints may exist, but they are often rate-limited or unstable
 
-Variables à renseigner:
+Required variables:
 
-- `SEPOLIA_RPC_URL` : URL HTTP du provider RPC Sepolia
-- `PRIVATE_KEY` : clé privée du wallet de déploiement (wallet testnet dédié)
+- `SEPOLIA_RPC_URL`: HTTP URL of the Sepolia RPC provider
+- `PRIVATE_KEY`: private key of the deployment wallet (dedicated testnet wallet)
 
-Préparer l'environnement Sepolia:
+Prepare Sepolia environment:
 
 ```bash
 cp .env.example .env
-# puis renseigner SEPOLIA_RPC_URL et PRIVATE_KEY dans .env
+# then fill SEPOLIA_RPC_URL and PRIVATE_KEY in .env
 ```
 
-Sans Makefile:
+Without Makefile:
 
 ```bash
 npx hardhat compile
@@ -119,12 +122,12 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --network sepolia
 ```
 
-## Déploiement public (à compléter)
+## Public Deployment (to complete)
 
 - Goodies42 (Sepolia): `0xaDf4D6A3889962F5EF5658a813C75f7c922334ED`
 - Goodies42Shop (Sepolia): `0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750`
-- Lien Etherscan: `https://sepolia.etherscan.io/address/0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750#code`
+- Etherscan link: `https://sepolia.etherscan.io/address/0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750#code`
 
-## Whitepaper
+## Whitepapers
 
-Voir [WHITEPAPER](documentation/WHITEPAPER.md).
+See [WHITEPAPER FR](documentation/WHITEPAPER_FR.md) and [WHITEPAPER US](documentation/WHITEPAPER_US.md).
