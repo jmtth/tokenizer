@@ -2,6 +2,8 @@
 
 > Projet ERC20 réalisé dans le cadre de l’école 42.
 
+![Goodies42 logo](./documentation/GDS42_logo.png)
+
 ## Résumé
 
 `Goodies42 (GDS42)` est un token utilitaire pour récompenser les étudiants et acheter des goodies via un contrat boutique.
@@ -119,10 +121,10 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 
 ## Déploiement public (à compléter)
 
-- Goodies42 (Sepolia): `TODO`
-- Goodies42Shop (Sepolia): `TODO`
-- Lien Etherscan: `TODO`
+- Goodies42 (Sepolia): `0xaDf4D6A3889962F5EF5658a813C75f7c922334ED`
+- Goodies42Shop (Sepolia): `0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750`
+- Lien Etherscan: `https://sepolia.etherscan.io/address/0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750#code`
 
 ## Whitepaper
 
-Voir `documentation/WHITEPAPER.md`.
+Voir [WHITEPAPER](documentation/WHITEPAPER.md).

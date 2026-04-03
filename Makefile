@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-MODULE ?= ./deployment/ignition/modules/Goodies42Core.ts
+MODULE ?= ./deployment/ignition/modules/Goodies42.ts
 NETWORK ?= localhost
 
 .PHONY: help install compile test clean node deploy-local deploy-sepolia deploy-core-local deploy-core-sepolia deploy-bonus-local deploy-bonus-sepolia demo
