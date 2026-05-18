@@ -48,19 +48,19 @@ Implémente les fonctions ERC20 principales:
 
 Sécurité/propriété:
 
-- `onlyOwner` sur fonctions sensibles
-- transfert de propriété en 2 étapes: `transferOwnership` puis `acceptOwnership`
-- possibilité de transférer la propriété vers un multisig
+- `onlyOwner` sur fonctions sensibles.
+- transfert de propriété en 2 étapes: `transferOwnership` puis `acceptOwnership`.
+- possibilité de transférer la propriété vers un multisig.
 
 ### `code/contracts/Goodies42Shop.sol`
 
 Permet l’achat d’un goodie via `buy`:
 
-- vérification du prix on-chain via `itemPrice[itemId]`
-- accès bonus (`LotteryAccess`) si bonne réponse
-- sinon transfert du prix vers la trésorerie du shop
-- max `LotteryAccess` par utilisateur: `3`
-- retrait admin possible via `withdrawTokens`
+- vérification du prix on-chain via `itemPrice[itemId]`.
+- accès bonus (`LotteryAccess`) si bonne réponse.
+- sinon transfert du prix vers la trésorerie du shop.
+- max `LotteryAccess` par utilisateur: `3`.
+- retrait admin possible via `withdrawTokens`.
 
 ## Déroulement d'un achat (wallet étudiant)
 
@@ -74,7 +74,7 @@ Flux standard côté dApp:
 6. La dApp envoie ensuite `buy(itemId, answer)`.
 7. L'étudiant confirme la transaction `buy` dans son wallet.
 8. Le contrat applique la règle:
-	- bonus valide: pas de paiement en token, consommation de `LotteryAccess`
+	- bonus valide: pas de paiement en token, consommation de `LotteryAccess`.
 	- sinon: `transferFrom(student, shop, price)`
 9. Le backend peut confirmer l'achat en lisant l'event `ItemPurchased` on-chain.
 
@@ -95,14 +95,14 @@ make deploy-sepolia
 
 Pour déployer sur Sepolia, Hardhat doit se connecter à un noeud Ethereum via une URL RPC.
 
-- La blockchain cible est Sepolia, mais l'accès se fait via un provider RPC (Alchemy, Infura, QuickNode, etc.)
-- Sans URL RPC valide, le projet ne peut pas lire l'état de la chaîne ni envoyer les transactions de déploiement
-- Un endpoint public sans compte peut exister, mais il est souvent limité ou instable
+- La blockchain cible est Sepolia, mais l'accès se fait via un provider RPC (Alchemy, Infura, QuickNode, etc.).
+- Sans URL RPC valide, le projet ne peut pas lire l'état de la chaîne ni envoyer les transactions de déploiement.
+- Un endpoint public sans compte peut exister, mais il est souvent limité ou instable.
 
 Variables à renseigner:
 
-- `SEPOLIA_RPC_URL` : URL HTTP du provider RPC Sepolia
-- `PRIVATE_KEY` : clé privée du wallet de déploiement (wallet testnet dédié)
+- `SEPOLIA_RPC_URL` : URL HTTP du provider RPC Sepolia.
+- `PRIVATE_KEY` : clé privée du wallet de déploiement (wallet testnet dédié).
 
 Préparer l'environnement Sepolia:
 

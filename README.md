@@ -98,13 +98,13 @@ make deploy-sepolia
 To deploy on Sepolia, Hardhat must connect to an Ethereum node through an RPC URL.
 
 - Target blockchain is Sepolia, but access is through an RPC provider (Alchemy, Infura, QuickNode, etc.)
-- Without a valid RPC URL, the project cannot read chain state or broadcast deployment transactions
-- Public endpoints may exist, but they are often rate-limited or unstable
+- Without a valid RPC URL, the project cannot read chain state or broadcast deployment transactions.
+- Public endpoints may exist, but they are often rate-limited or unstable.
 
 Required variables:
 
-- `SEPOLIA_RPC_URL`: HTTP URL of the Sepolia RPC provider
-- `PRIVATE_KEY`: private key of the deployment wallet (dedicated testnet wallet)
+- `SEPOLIA_RPC_URL`: HTTP URL of the Sepolia RPC provider.
+- `PRIVATE_KEY`: private key of the deployment wallet (dedicated testnet wallet).
 
 Prepare Sepolia environment:
 
