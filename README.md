@@ -151,7 +151,8 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 3. Call `submitTransaction(...)` with:
    - `_to` = the address of `Goodies42Shop`
    - `_value` = `0`
-   - `_data` = the calldata of `acceptOwnership()`
+    - `_data` = the calldata of `acceptOwnership()` (selector: `0x79ba5097`)
+       - Note: if you can't install `ethers`, compute the selector by keccak256("acceptOwnership()") and take the first 4 bytes (or look it up on 4byte.directory).
 4. Each manager calls `signTransaction(txIndex)`.
 5. Once the threshold is reached, one manager calls `executeTransaction(txIndex)`.
 
