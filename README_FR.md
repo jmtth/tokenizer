@@ -52,6 +52,8 @@ Sécurité/propriété:
 - transfert de propriété en 2 étapes: `transferOwnership` puis `acceptOwnership`.
 - possibilité de transférer la propriété vers un multisig.
 
+> [Lien vers norme ERC20](https://ethereum.org/fr/developers/docs/standards/tokens/erc-20/)
+
 ### `code/contracts/Goodies42Shop.sol`
 
 Permet l’achat d’un goodie via `buy`:

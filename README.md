@@ -54,6 +54,8 @@ Security/ownership:
 - 2-step ownership transfer: `transferOwnership` then `acceptOwnership`
 - ownership can be transferred to a multisig
 
+> [link to ERC20 standard](https://ethereum.org/fr/developers/docs/standards/tokens/erc-20/)
+
 ### `code/contracts/Goodies42Shop.sol`
 
 Handles item purchases through `buy`:
