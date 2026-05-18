@@ -156,6 +156,16 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 4. Ensuite, chaque manager appelle `signTransaction(txIndex)`.
 5. Quand le seuil est atteint, un manager appelle `executeTransaction(txIndex)`.
 
-## Whitepaper
+**Helpers pour vérifier le contrat multisignature (Hardhat + Viem)**
 
+- **But :** Affiche les items du `Goodies42Shop` et les transactions multisig non exécutées.
+- **Prérequis :** définir `SEPOLIA_RPC_URL` , `MULTISIG_ADDRESS`, `SHOP_ADDRESS` dans `.env`.
+- **Commande :**
+
+```bash
+npx hardhat run --network sepolia code/scripts/check_info.js
+```
+- **Sortie attendue :** liste des items/prix puis les transactions en attente (txIndex, to, value, selector).
+
+## Whitepaper
 Voir [WHITEPAPER FR](documentation/WHITEPAPER_FR.md) et [WHITEPAPER US](documentation/WHITEPAPER_US.md).

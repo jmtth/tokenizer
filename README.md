@@ -158,6 +158,17 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 4. Each manager calls `signTransaction(txIndex)`.
 5. Once the threshold is reached, one manager calls `executeTransaction(txIndex)`.
 
+**Helpers to check multisig contract (Hardhat + Viem)**
+
+- **Goal :** Show items of `Goodies42Shop` and pending transactions.
+- **Setup :** define `SEPOLIA_RPC_URL`,  `MULTISIG_ADDRESS`, `SHOP_ADDRESS` in `.env`.
+- **Command:**
+
+```bash
+npx hardhat run --network sepolia code/scripts/check_info.js
+```
+- **Output :** List of items/price and pending transactions (txIndex, to, value, selector).
+
 ## Whitepapers
 
 See [WHITEPAPER FR](documentation/WHITEPAPER_FR.md) and [WHITEPAPER US](documentation/WHITEPAPER_US.md).
