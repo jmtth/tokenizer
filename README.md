@@ -127,6 +127,7 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 ## Public Deployment (to complete)
 
 - Goodies42 (Sepolia): `0xaDf4D6A3889962F5EF5658a813C75f7c922334ED`
+- Etherscan link :`https://sepolia.etherscan.io/address/0x44cb13253644ab230b52726235d378aa5e33e16b#code`
 - Goodies42Shop (Sepolia): `0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750`
 - Etherscan link: `https://sepolia.etherscan.io/address/0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750#code`
 
