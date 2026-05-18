@@ -24,7 +24,7 @@
     - on est libre du choix du nombre de signatures
 
 # Evaluation du projet
-- être capable de faire des operatins minimalistes
+- être capable de faire des operations minimalistes
 
 # Choix techniques
 - standard ERC20
@@ -33,7 +33,7 @@
 - blockchain de test Sepolia
 - wallet metamask
 - test en local puis en testnet
-- scripts js pour test en cli avec hardhat hre
+- scripts js pour test en cli avec hardhat network
 - etherscan pour fair des opérations sur le token
 
 # Mon choix de token

@@ -126,12 +126,34 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --network sepolia
 ```
 
-## Public Deployment (to complete)
+## Public Deployment
 
 - Goodies42 (Sepolia): `0xaDf4D6A3889962F5EF5658a813C75f7c922334ED`
-- Etherscan link :`https://sepolia.etherscan.io/address/0x44cb13253644ab230b52726235d378aa5e33e16b#code`
+- Etherscan link :`https://sepolia.etherscan.io/address/0xaDf4D6A3889962F5EF5658a813C75f7c922334ED#code`
 - Goodies42Shop (Sepolia): `0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750`
 - Etherscan link: `https://sepolia.etherscan.io/address/0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750#code`
+- Goodies42Management (Sepolia): `0xa9Df6773F1aD7da8d8cFe6DD2bAb4B28B93b0E43`
+- Etherscan link (Sepolia): `https://sepolia.etherscan.io/address/0xa9Df6773F1aD7da8d8cFe6DD2bAb4B28B93b0E43#code`
+
+## Deployment Sequence
+
+1. Deploy `Goodies42Core` to deploy `Goodies42` and `Goodies42Shop`.
+2. Deploy `Goodies42Bonus` to deploy `Goodies42Management`.
+3. Transfer the ownership of `Goodies42Shop` to `Goodies42Management`.
+4. Call `acceptOwnership()` from the multisig flow so `Goodies42Management` becomes the new owner of `Goodies42Shop`.
+
+`Goodies42Shop` uses `Goodies42`, but it is not automatically its owner. The ownership transfer is a separate two-step process in `Goodies42Shop.sol`.
+
+## Etherscan Transfer Flow
+
+1. On `Goodies42Shop`, call `transferOwnership(<multisig address>)` from the current owner.
+2. On the Etherscan page of `Goodies42Management`, open `Write Contract`.
+3. Call `submitTransaction(...)` with:
+   - `_to` = the address of `Goodies42Shop`
+   - `_value` = `0`
+   - `_data` = the calldata of `acceptOwnership()`
+4. Each manager calls `signTransaction(txIndex)`.
+5. Once the threshold is reached, one manager calls `executeTransaction(txIndex)`.
 
 ## Whitepapers
 

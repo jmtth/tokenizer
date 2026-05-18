@@ -124,12 +124,34 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --network sepolia
 ```
 
-## Déploiement public (à compléter)
+## Déploiement public
 
 - Goodies42 (Sepolia): `0xaDf4D6A3889962F5EF5658a813C75f7c922334ED`
-- Etherscan link :`https://sepolia.etherscan.io/address/0x44cb13253644ab230b52726235d378aa5e33e16b#code`
+- Etherscan link :`https://sepolia.etherscan.io/address/0xaDf4D6A3889962F5EF5658a813C75f7c922334ED#code`
 - Goodies42Shop (Sepolia): `0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750`
-- Lien Etherscan: `https://sepolia.etherscan.io/address/0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750#code`
+- Etherscan link: `https://sepolia.etherscan.io/address/0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750#code`
+- Goodies42Management (Sepolia): `0xa9Df6773F1aD7da8d8cFe6DD2bAb4B28B93b0E43`
+- Etherscan link (Sepolia): `https://sepolia.etherscan.io/address/0xa9Df6773F1aD7da8d8cFe6DD2bAb4B28B93b0E43#code`
+
+## Séquence de déploiement
+
+1. Déployer `Goodies42Core` qui déploie `Goodies42` et `Goodies42Shop`.
+2. Déployer `Goodies42Bonus` qui déploie `Goodies42Management`.
+3. Transférer la propriété de `Goodies42Shop` à `Goodies42Management`.
+4. Appeler `acceptOwnership()` depuis le flux multisig pour que `Goodies42Management` devienne le nouveau propriétaire de `Goodies42Shop`.
+
+`Goodies42Shop` utilise `Goodies42`, mais n'est pas automatiquement son propriétaire. Le transfert de propriété se fait en deux étapes dans `Goodies42Shop.sol` afin de garantir que ce contrat ait toujours un propriétaire.
+
+## Flux de transfert sur Etherscan
+
+1. Sur `Goodies42Shop`, appelez `transferOwnership(<adresse du multisig>)` depuis l’owner actuel.
+2. Sur la page Etherscan de `Goodies42Management`, ouvrez `Write Contract`.
+3. Appelez `submitTransaction(...)` avec :
+	- `_to` = l’adresse de `Goodies42Shop`
+	- `_value` = `0`
+	- `_data` = le calldata de `acceptOwnership()`
+4. Ensuite, chaque manager appelle `signTransaction(txIndex)`.
+5. Quand le seuil est atteint, un manager appelle `executeTransaction(txIndex)`.
 
 ## Whitepaper
 
