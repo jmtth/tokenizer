@@ -151,6 +151,8 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 	- `_value` = `0`
 	 - `_data` = le calldata de `acceptOwnership()` (sélecteur : `0x79ba5097`)
 		 - Remarque : si vous ne pouvez pas installer `ethers`, calculez le sélecteur en prenant keccak256("acceptOwnership()") et en utilisant les 4 premiers octets, ou recherchez-le sur 4byte.directory.
+		 [Encoder Online](https://web3tools.chainstacklabs.com/keccak-256)
+		 - Remarque : C'est le code hexa à côté du nom de la fonction sur Etherscan
 4. Ensuite, chaque manager appelle `signTransaction(txIndex)`.
 5. Quand le seuil est atteint, un manager appelle `executeTransaction(txIndex)`.
 

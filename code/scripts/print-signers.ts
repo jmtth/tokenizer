@@ -1,32 +1,8 @@
 import hre from "hardhat";
 
 async function main() {
-  // Retrieve accounts from the JSON-RPC provider (works for hardhat node)
-  let accounts: string[] = [];
-  try {
-    // @ts-ignore - provider.request exists on the Hardhat network provider
-    accounts = (await hre.network.provider.request({ method: "eth_accounts", params: [] })) as string[];
-  } catch (e) {
-    console.error("Could not query provider eth_accounts:", e instanceof Error ? e.message : e);
-  }
-
-  console.log("RPC accounts:");
-  if (accounts && accounts.length) {
-    accounts.forEach((a, i) => console.log(`${i}: ${a}`));
-  } else {
-    console.log("(no accounts returned by provider)");
-  }
-  // compute selector for acceptOwnership() using ethers when available
-  let ACCEPT_OWNERSHIP_SELECTOR = "0x79ba5097"; // fallback
-  try {
-    const ethers = await import("ethers");
-    const { utils } = ethers;
-    ACCEPT_OWNERSHIP_SELECTOR = utils.id("acceptOwnership()").slice(0, 10);
-    console.log("\nacceptOwnership() selector (computed via ethers):", ACCEPT_OWNERSHIP_SELECTOR);
-  } catch (e) {
-    console.log("\nCould not compute selector via ethers, using fallback selector:", ACCEPT_OWNERSHIP_SELECTOR);
-  }
-    // If PRIVATE_KEYS are set in the environment, derive and print their corresponding addresses
+  
+  // If PRIVATE_KEYS are set in the environment, derive and print their corresponding addresses
   const keysFromEnv = process.env.PRIVATE_KEYS ? process.env.PRIVATE_KEYS.split(",").map((k) => k.trim()).filter(Boolean) : [];
   if (keysFromEnv.length) {
     console.log("\nConfigured PRIVATE_KEYS addresses:");
@@ -43,6 +19,27 @@ async function main() {
     }
   } else {
     console.log("\nNo PRIVATE_KEYS found in environment.");
+  }
+
+  // compute selector for acceptOwnership() using ethers when available
+  let ACCEPT_OWNERSHIP_SELECTOR = ""; // fallback
+  let grantAccess_SELECTOR = ""; // fallback
+  let setItemPrice_SELECTOR = ""; // fallback
+  let transferOwnership_SELECTOR = ""; // fallback
+  try {
+    const ethers = await import("ethers");
+    const { utils } = ethers;
+    ACCEPT_OWNERSHIP_SELECTOR = utils.id("acceptOwnership()").slice(0, 10);
+    grantAccess_SELECTOR = utils.id("grantAccess(address)").slice(0, 10);
+    setItemPrice_SELECTOR = utils.id("setItemPrice(uint256,uint256)").slice(0, 10);
+    transferOwnership_SELECTOR = utils.id("transferOwnership(address)").slice(0, 10);
+    console.log("\nComputed selectors using ethers:");
+    console.log("acceptOwnership() selector (computed via ethers):", ACCEPT_OWNERSHIP_SELECTOR);
+    console.log("grantAccess(address) selector (computed via ethers):", grantAccess_SELECTOR);
+    console.log("setItemPrice(uint256,uint256) selector (computed via ethers):", setItemPrice_SELECTOR);
+    console.log("transferOwnership(address) selector (computed via ethers):", transferOwnership_SELECTOR);
+  } catch (e) {
+    console.log("\nCould not compute selector via ethers, using fallback selector:", ACCEPT_OWNERSHIP_SELECTOR);
   }
 }
 
