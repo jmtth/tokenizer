@@ -104,7 +104,9 @@ Pour déployer sur Sepolia, Hardhat doit se connecter à un noeud Ethereum via u
 Variables à renseigner:
 
 - `SEPOLIA_RPC_URL` : URL HTTP du provider RPC Sepolia.
-- `PRIVATE_KEY` : clé privée du wallet de déploiement (wallet testnet dédié).
+- `PRIVATE_KEYS` : clés privées du wallet de déploiement (wallet testnet dédié).
+> on peut en mettre plusieurs, elles doivent être séparées par des `,` 
+> C'est nécessaire pour le déploiement multisignatures
 
 Préparer l'environnement Sepolia:
 

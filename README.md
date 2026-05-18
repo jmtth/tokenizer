@@ -106,7 +106,9 @@ To deploy on Sepolia, Hardhat must connect to an Ethereum node through an RPC UR
 Required variables:
 
 - `SEPOLIA_RPC_URL`: HTTP URL of the Sepolia RPC provider.
-- `PRIVATE_KEY`: private key of the deployment wallet (dedicated testnet wallet).
+- `PRIVATE_KEYS`: private key of the deployment wallet (dedicated testnet wallet).
+> We could add multiple keys separated by `,``
+> Necessary for mutli signature contract
 
 Prepare Sepolia environment:
 
