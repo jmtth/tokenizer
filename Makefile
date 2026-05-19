@@ -10,13 +10,16 @@ help:
 	@echo "  make install         # install npm dependencies"
 	@echo "  make compile         # compile contracts"
 	@echo "  make test            # run all tests"
+	@echo "  make test-coverage   # run tests with coverage report"
 	@echo "  make node            # start local hardhat node"
 	@echo "  make deploy-local    # deploy with ignition on localhost"
 	@echo "  make deploy-sepolia  # deploy with ignition on sepolia"
 	@echo "  make deploy-core-local   # deploy Goodies42 + Goodies42Shop on localhost"
 	@echo "  make deploy-core-sepolia # deploy Goodies42 + Goodies42Shop on sepolia"
+	@echo "  make verify-core-sepolia # verify Goodies42 + Goodies42Shop on sepolia"
 	@echo "  make deploy-bonus-local  # deploy Goodies42Management (multisig) on localhost"
 	@echo "  make deploy-bonus-sepolia# deploy Goodies42Management (multisig) on sepolia"
+	@echo "  make verify-bonus-sepolia# verify Goodies42Management (multisig) on sepolia"
 	@echo "  make clean           # clean hardhat cache/artifacts"
 	@echo "  make demo            # run the demo script"
 
@@ -28,6 +31,9 @@ compile:
 
 test:
 	npx hardhat test
+
+test-coverage:
+	npx hardhat test --coverage
 
 node:
 	npx hardhat node
@@ -44,11 +50,17 @@ deploy-core-local:
 deploy-core-sepolia:
 	npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --network sepolia
 
+verify-core-sepolia:
+	npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --network sepolia --verify
+
 deploy-bonus-local:
 	npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Bonus.ts --network localhost
 
 deploy-bonus-sepolia:
 	npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Bonus.ts --network sepolia
+
+verify-bonus-sepolia:
+	npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Bonus.ts --network sepolia --verify
 
 demo:
 	npx hardhat run code/scripts/demo.js

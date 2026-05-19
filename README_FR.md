@@ -126,12 +126,13 @@ npx hardhat ignition deploy ./deployment/ignition/modules/Goodies42Core.ts --net
 
 ## Déploiement public
 
-- Goodies42 (Sepolia): `0xaDf4D6A3889962F5EF5658a813C75f7c922334ED`
-- Etherscan link :`https://sepolia.etherscan.io/address/0xaDf4D6A3889962F5EF5658a813C75f7c922334ED#code`
-- Goodies42Shop (Sepolia): `0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750`
-- Etherscan link: `https://sepolia.etherscan.io/address/0x15a97d74EC9aE403E791B9A59F8656dE8a6Cc750#code`
-- Goodies42Management (Sepolia): `0xa9Df6773F1aD7da8d8cFe6DD2bAb4B28B93b0E43`
-- Etherscan link (Sepolia): `https://sepolia.etherscan.io/address/0xa9Df6773F1aD7da8d8cFe6DD2bAb4B28B93b0E43#code`
+- Goodies42 (Sepolia): `0xfa7BD69e270db61CCaB68EC2ea2B37D8Ff4A7C55`
+- Etherscan link :`https://sepolia.etherscan.io/address/0xfa7BD69e270db61CCaB68EC2ea2B37D8Ff4A7C55#code`
+- Goodies42Shop (Sepolia): `0xD29ac7166c9607aF1eA7d21A5d80C6ce25D4d551`
+- Etherscan link: `https://sepolia.etherscan.io/address/0xD29ac7166c9607aF1eA7d21A5d80C6ce25D4d551#code`
+- Goodies42Management (Sepolia): `0x1D65bBCbF17d9120694ACbCcf2868c28C513CA4A`
+- Etherscan link (Sepolia): `https://sepolia.etherscan.io/address/0x1D65bBCbF17d9120694ACbCcf2868c28C513CA4A#code`
+
 
 ## Séquence de déploiement
 
